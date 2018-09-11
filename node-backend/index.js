@@ -3,9 +3,12 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const mongoose = require('mongoose');
 
+const clients = require('./clients');
+
 const PORT = 3010;
 
-mongoose.connect('mongodb://mongodb')
+mongoose
+  .connect('mongodb://mongodb')
   .then(() => console.log('Backend Started'))
   .catch(err => {
     console.error('Backend error:', err.stack);
@@ -18,7 +21,7 @@ app.use(express.static('public'));
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-// app.use(basePath, todoListRoutes);
+app.use('/api/clients', clients);
 
 app.listen(PORT, () => {
   console.log('Assesment Backend running on Port: ', PORT);
