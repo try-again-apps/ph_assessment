@@ -1,4 +1,13 @@
-.App {
+.container {
+  margin: 25px;
+  display: flex;
+  flex-direction: column;
+  & > :not(:last-child) {
+    margin-bottom: 16px;
+  }
+}
+
+/* .App {
   text-align: center;
 }
 
@@ -25,4 +34,4 @@
 @keyframes App-logo-spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
-}
+} */

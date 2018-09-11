@@ -4,3 +4,6 @@ dist
 
 # ESlint cache
 .eslintcache
+
+# CSS are generated from SCSS
+src/**/*.css
