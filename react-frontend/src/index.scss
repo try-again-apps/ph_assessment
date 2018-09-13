@@ -29,3 +29,12 @@ body {
 .right {
   text-align: right;
 }
+
+.column {
+  display: flex;
+  flex-direction: column;
+}
+
+h3 {
+  margin: 0
+};

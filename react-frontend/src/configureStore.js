@@ -1,8 +1,11 @@
 import { applyMiddleware, compose, createStore } from 'redux';
 import thunkMiddleware from 'redux-thunk';
+import { combineReducers } from 'redux-immutable';
+import { routerMiddleware } from 'react-router-redux';
 
 import loggerMiddleware from './logger';
 import rootReducer from './reducers';
+import { routerReducer } from './reducers/routerReducer';
 
 function devToolsEnhancer() {
   return window.__REDUX_DEVTOOLS_EXTENSION__
@@ -10,14 +13,23 @@ function devToolsEnhancer() {
     : f => f;
 }
 
-export default function configureStore(preloadedState) {
-  const middlewares = [loggerMiddleware, thunkMiddleware];
+export default function configureStore(preloadedState, history) {
+  const middlewares = [
+    loggerMiddleware,
+    thunkMiddleware,
+    routerMiddleware(history)
+  ];
   const middlewareEnhancer = applyMiddleware(...middlewares);
 
   const enhancers = [middlewareEnhancer, devToolsEnhancer()];
   const composedEnhancers = compose(...enhancers);
 
-  const store = createStore(rootReducer, preloadedState, composedEnhancers);
+  const reducer = combineReducers({
+    app: rootReducer,
+    routing: routerReducer
+  });
+
+  const store = createStore(reducer, preloadedState, composedEnhancers);
 
   return store;
 }

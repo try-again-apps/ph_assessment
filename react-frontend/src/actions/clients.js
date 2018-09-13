@@ -1,4 +1,4 @@
-const API_PATH = 'http://localhost:3010/api/clients/';
+const API_PATH = 'http://localhost:3010/api/clients';
 
 const defaultConfig = data => ({
   method: 'POST', // *GET, POST, PUT, DELETE, etc.
@@ -18,9 +18,13 @@ export const fetchClients = (limit = 10) => {
   return fetch(`${API_PATH}/all`).then(res => res.json());
 };
 
-export const addClient = ({ name, description, status }) => {
+export const fetchClient = id => {
+  return fetch(`${API_PATH}/${id}`).then(res => res.json());
+};
+
+export const addClient = ({ name, details, status }) => {
   const config = {
-    ...defaultConfig({ name, description, status }),
+    ...defaultConfig({ name, details, status }),
     method: 'POST'
   };
   return fetch(`${API_PATH}/add`, config).then(res => res.json());
@@ -32,4 +36,12 @@ export const removeClient = id => {
     method: 'DELETE'
   };
   return fetch(`${API_PATH}/delete`, config);
+};
+
+export const updateClient = ({ id, name, details, status }) => {
+  const config = {
+    ...defaultConfig({ name, details, status }),
+    method: 'POST'
+  };
+  return fetch(`${API_PATH}/update/${id}`, config);
 };

@@ -12,10 +12,16 @@ class About extends React.PureComponent {
         <li>Limit operations buttons width and give some space between</li>
         <li>Clients cannot have same name - unique?</li>
         <li>CRUD for client</li>
-        <li>CRUD for comments</li>
-        <li>getting clients from backend wiht filter, sorting and limit</li>
-        <li>Getting single clinet and comment</li>
-        <li>Use moment for date formattings</li>
+        <li>CRUD for notes</li>
+        <li>getting clients from backend with filter, sorting and limit</li>
+        <li>Getting single note</li>
+        <li>(M) adding notes</li>
+        <li>(M) removing notes</li>
+        <li>(M) updating notes</li>
+        <li>(M) filtering (by status)</li>
+        <li>(M) sorting by name/status</li>
+        <li>Add busy state for every operation (Redux is ready for it)</li>
+        <li>SSR for backend</li>
       </div>
     );
   }
