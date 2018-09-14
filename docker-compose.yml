@@ -10,6 +10,7 @@ services:
       - "3010:3010"
     volumes:
       - ./node-backend:/usr/src/app
+      - /usr/src/app/node_modules
     depends_on:
       - mongodb
   frontend:
@@ -18,5 +19,6 @@ services:
       - "3000:3000"
     volumes:
       - ./react-frontend:/usr/src/app
+      - /usr/src/app/node_modules
     depends_on:
       - backend
