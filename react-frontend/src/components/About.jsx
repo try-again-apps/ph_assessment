@@ -22,6 +22,7 @@ class About extends React.PureComponent {
         <li>(M) sorting by name/status</li>
         <li>Add busy state for every operation (Redux is ready for it)</li>
         <li>SSR for backend</li>
+        <li>Add remove on client details page</li>
       </div>
     );
   }

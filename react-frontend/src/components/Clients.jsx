@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import ReactTable from 'react-table';
 import EditIcon from 'material-ui-icons/Edit';
 import CloseIcon from 'material-ui-icons/Close';
+import ChatIcon from 'material-ui-icons/Chat';
 import RaisedButton from 'material-ui/RaisedButton';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -17,10 +18,20 @@ import {
   showClientDetails
 } from './model';
 import ClientForm from './ClientForm';
+import FilterPicker from './FilterPicker';
+
+const operationButtonStyle = {
+  minWidth: 32,
+  width: 32,
+  height: 32,
+  minHeight: 32
+};
 
 class Clients extends PureComponent {
   state = {
-    addMode: false
+    addMode: false,
+    sortBy: 'name',
+    sortOrder: 'asc'
   };
 
   componentWillMount() {
@@ -31,11 +42,19 @@ class Clients extends PureComponent {
   changeAddMode = value => () => this.setState({ addMode: value });
 
   renderOperations = id => (
-    <div>
+    <div className="col-spacing-2">
       <RaisedButton
+        icon={<ChatIcon />}
+        containerElement={<Link to={`/client/${id}/addNote`} />}
+        onClick={e => e.stopPropagation()}
+        style={operationButtonStyle}
+      />
+      <RaisedButton
+        className="small-button"
         icon={<EditIcon />}
         containerElement={<Link to={`/client/${id}/edit`} />}
         onClick={e => e.stopPropagation()}
+        style={operationButtonStyle}
       />
       <RaisedButton
         icon={<CloseIcon />}
@@ -43,6 +62,7 @@ class Clients extends PureComponent {
           this.props.removeClient(id);
           event.stopPropagation();
         }}
+        style={operationButtonStyle}
       />
     </div>
   );
@@ -52,6 +72,39 @@ class Clients extends PureComponent {
     return {
       onClick: () => showClientDetails({ id: rowInfo.original._id })
     };
+  };
+
+  onFilterChange = value => {
+    const { fetchClients } = this.props;
+    const { sortBy, sortOrder } = this.state;
+    const filterBy = value;
+    this.setState({ filterBy });
+    fetchClients({ filterBy, sortOrder, sortBy });
+  };
+
+  onSortChange = sorted => {
+    const [{ id, desc }] = sorted;
+    const { fetchClients } = this.props;
+    const { filterBy } = this.state;
+    const sortBy = id;
+    const sortOrder = desc ? 'desc' : 'asc';
+    this.setState({ sortBy, sortOrder });
+    fetchClients({ filterBy, sortOrder, sortBy });
+  };
+
+  renderToolbar = () => {
+    return (
+      <div className="row">
+        <div>
+          <RaisedButton
+            icon={<PersonAddIcon />}
+            label="Add New"
+            onClick={this.changeAddMode(true)}
+          />
+        </div>
+        <FilterPicker onChange={this.onFilterChange} />
+      </div>
+    );
   };
 
   render() {
@@ -69,12 +122,13 @@ class Clients extends PureComponent {
       },
       {
         Header: 'Notes count',
-        accessor: 'notesCount'
+        id: 'notes',
+        accessor: d => d.notes.length
       },
       {
         Header: 'Created',
         id: 'createdAt',
-        accessor: d => moment(d).format('MMM Do YY')
+        accessor: d => moment(d.createdAt).format('MMM Do YY, HH:mm')
       },
       {
         Header: 'Operations',
@@ -91,15 +145,9 @@ class Clients extends PureComponent {
     }, []);
 
     return (
-      <div>
+      <div className="row-spacing-2">
         {addMode && <ClientForm onFinish={this.changeAddMode(false)} />}
-        {!addMode && (
-          <RaisedButton
-            icon={<PersonAddIcon />}
-            label="Add New"
-            onClick={this.changeAddMode(true)}
-          />
-        )}
+        {!addMode && this.renderToolbar()}
         <h2>Clients</h2>
         <ReactTable
           className="-striped -highlight"
@@ -108,6 +156,7 @@ class Clients extends PureComponent {
           defaultPageSize={10}
           noDataText="No clients found"
           getTrProps={this.onRowClick}
+          onSortedChange={sorted => this.onSortChange(sorted)}
         />
       </div>
     );

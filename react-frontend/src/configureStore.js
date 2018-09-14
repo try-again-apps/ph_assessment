@@ -3,7 +3,6 @@ import thunkMiddleware from 'redux-thunk';
 import { combineReducers } from 'redux-immutable';
 import { routerMiddleware } from 'react-router-redux';
 
-import loggerMiddleware from './logger';
 import rootReducer from './reducers';
 import { routerReducer } from './reducers/routerReducer';
 
@@ -15,7 +14,6 @@ function devToolsEnhancer() {
 
 export default function configureStore(preloadedState, history) {
   const middlewares = [
-    loggerMiddleware,
     thunkMiddleware,
     routerMiddleware(history)
   ];

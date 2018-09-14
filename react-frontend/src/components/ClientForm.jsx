@@ -6,6 +6,7 @@ import MenuItem from 'material-ui/MenuItem';
 import { Link } from 'react-router';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import Paper from 'material-ui/Paper';
 
 import { addClient, updateClient } from './model';
 import { fetchClient } from '../actions/clients';
@@ -36,7 +37,9 @@ class ClientForm extends PureComponent {
       updateClient({ id, name, details, status });
     } else {
       addClient({ name, details, status });
-      onFinish();
+      if (onFinish) {
+        onFinish();
+      }
     }
   };
 
@@ -51,32 +54,13 @@ class ClientForm extends PureComponent {
   };
 
   render() {
+    const { name, status, details } = this.state;
     const { params: { id } = {}, onFinish } = this.props;
     const cancelLinkTo = onFinish ? '' : id ? `/client/${id}` : '/';
     const title = `${id ? 'Edit' : 'Add'} client`;
     return (
-      <div className="column">
-        <h3>{title}</h3>
-        <TextField
-          hintText="Name"
-          onChange={this.onChangeName}
-          value={this.state.name}
-        />
-        <DropDownMenu
-          value={this.state.status}
-          onChange={this.onChangeStatus}
-          autoWidth={false}
-        >
-          <MenuItem value={'prospective'} primaryText="prospective" />
-          <MenuItem value={'current'} primaryText="current" />
-          <MenuItem value={'non-active'} primaryText="non-active" />
-        </DropDownMenu>
-        <TextField
-          hintText="Details"
-          onChange={this.onChangeDetails}
-          value={this.state.details}
-        />
-        <div>
+      <div className="row-spacing-2">
+        <div className="col-spacing-2">
           <RaisedButton
             containerElement={<Link to={cancelLinkTo} />}
             label="Cancel"
@@ -84,6 +68,31 @@ class ClientForm extends PureComponent {
           />
           <RaisedButton label="Save" onClick={this.onSave} />
         </div>
+        <Paper>
+          <div className="inner-container column">
+            <h2>{title}</h2>
+            <TextField
+              hintText="Name"
+              onChange={this.onChangeName}
+              value={name}
+            />
+            <DropDownMenu
+              autoWidth={false}
+              onChange={this.onChangeStatus}
+              style={{ width: 256 }}
+              value={status}
+            >
+              <MenuItem value={'prospective'} primaryText="prospective" />
+              <MenuItem value={'current'} primaryText="current" />
+              <MenuItem value={'non-active'} primaryText="non-active" />
+            </DropDownMenu>
+            <TextField
+              hintText="Details"
+              onChange={this.onChangeDetails}
+              value={details}
+            />
+          </div>
+        </Paper>
       </div>
     );
   }

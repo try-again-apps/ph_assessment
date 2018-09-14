@@ -12,6 +12,8 @@ import About from './components/About';
 import Clients from './components/Clients';
 import ClientForm from './components/ClientForm';
 import ClientDetails from './components/ClientDetails';
+import Notes from './components/Notes';
+import NoteForm from './components/NoteForm';
 import registerServiceWorker from './registerServiceWorker';
 import configureStore from './configureStore';
 
@@ -28,6 +30,9 @@ ReactDOM.render(
         <Route path="/about" component={About} />
         <Route path="/client/:id" component={ClientDetails} />
         <Route path="/client/:id/edit" component={ClientForm} />
+        <Route path="/client/:clientId/addNote" component={NoteForm} />
+        <Route path="/notes" component={Notes} />
+        <Route path="/note/:noteId/edit" component={NoteForm} />
       </Route>
     </Router>
   </Provider>,

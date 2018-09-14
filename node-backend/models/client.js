@@ -14,15 +14,6 @@ const clientSchema = new Schema({
   notes: [{ type: Schema.Types.ObjectId, ref: 'Note' }]
 });
 
-const noteSchema = new Schema({
-  content: String,
-  client: { type: Schema.Types.ObjectId, ref: 'Client' }
-});
-
 const Client = mongoose.model('Client', clientSchema);
-const Note = mongoose.model('Note', noteSchema);
 
-module.exports = {
-  Client,
-  Note
-};
+module.exports = Client;
